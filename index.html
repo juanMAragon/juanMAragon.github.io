@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Juan Manuel Aragon Armas · Data Engineer</title>
+  <meta name="description" content="Juan Manuel Aragon Armas — Data Engineer in Turin, Italy. Python, PySpark, Databricks, SQL.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌀</text></svg>">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/img/favicon-180.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    /* Palette shared with the LaTeX CV */
+    :root {
+      --primary:   #001F5A;
+      --primary-2: #00153F;
+      --secondary: #0039AC;
+      --third:     #F3890B;
+      --body:      #5E5E5E;
+      --emphasis:  #2E2E2E;
+      --bg:        #E2E2E2;
+      --card:      #F7F7F7;
+      --radius:    14px;
+      --shadow:    0 2px 6px rgba(0,0,0,.06), 0 10px 30px rgba(0,31,90,.08);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; background: var(--bg); color: var(--body);
+      font-family: "Lato", system-ui, sans-serif; font-size: 16px; line-height: 1.6;
+    }
+    a { color: var(--secondary); text-decoration: none; }
+    h1, h2, h3 { font-family: "Roboto Slab", Georgia, serif; color: var(--primary); }
+    img { max-width: 100%; }
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+    /* ---------- Scroll progress ---------- */
+    #progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--third); z-index: 50; }
+
+    /* ---------- Nav ---------- */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 40;
+      transition: background .3s, box-shadow .3s, padding .3s;
+      padding: 18px 0;
+    }
+    nav.scrolled { background: rgba(0,31,90,.96); backdrop-filter: blur(6px); box-shadow: 0 4px 20px rgba(0,0,0,.2); padding: 10px 0; }
+    nav .container { display: flex; align-items: center; justify-content: space-between; }
+    .brand { font-family: "Roboto Slab", serif; font-weight: 700; color: #fff; font-size: 1.2rem; }
+    .brand span { color: var(--third); }
+    nav ul { list-style: none; display: flex; gap: 6px; margin: 0; padding: 0; }
+    nav ul a {
+      color: #d5def0; font-weight: 700; font-size: .9rem; padding: 6px 12px; border-radius: 999px;
+      transition: color .2s, background .2s;
+    }
+    nav ul a:hover { color: #fff; background: rgba(255,255,255,.08); }
+    nav ul a.active { color: var(--primary); background: var(--third); }
+    .menu-btn { display: none; background: none; border: 0; color: #fff; font-size: 1.4rem; cursor: pointer; }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative; min-height: 100vh; display: flex; align-items: center;
+      background: radial-gradient(1200px 600px at 80% 20%, #0039AC 0%, transparent 60%),
+                  linear-gradient(160deg, var(--primary) 0%, var(--primary-2) 100%);
+      color: #fff; overflow: hidden;
+    }
+    .hero::before { /* dotted grid, like a map of data points */
+      content: ""; position: absolute; inset: 0;
+      background-image: radial-gradient(rgba(255,255,255,.12) 1px, transparent 1px);
+      background-size: 26px 26px;
+      mask-image: linear-gradient(to bottom, #000 40%, transparent 100%);
+      animation: drift 40s linear infinite;
+    }
+    @keyframes drift { to { background-position: 260px 260px; } }
+    .hero .container { position: relative; display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; align-items: center; padding-top: 80px; padding-bottom: 80px; }
+    .eyebrow { color: var(--third); font-weight: 900; letter-spacing: .18em; text-transform: uppercase; font-size: .8rem; }
+    .hero h1 { color: #fff; font-size: clamp(2.3rem, 5.5vw, 4rem); line-height: 1.08; margin: 10px 0 14px; }
+    .hero h1 .last { color: #9fb6e6; font-weight: 400; }
+    .typed { font-size: clamp(1.1rem, 2.4vw, 1.5rem); font-weight: 700; min-height: 2.2em; }
+    .typed .word { color: var(--third); border-right: 3px solid var(--third); padding-right: 4px; animation: caret .8s step-end infinite; }
+    @keyframes caret { 50% { border-color: transparent; } }
+    .hero p.lead { color: #c9d4ea; max-width: 560px; font-size: 1.05rem; }
+    .cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 9px; padding: 12px 22px; border-radius: 999px;
+      font-weight: 900; font-size: .95rem; border: 2px solid transparent; cursor: pointer;
+      transition: transform .2s, box-shadow .2s, background .2s, color .2s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn.orange { background: var(--third); color: #fff; box-shadow: 0 8px 24px rgba(243,137,11,.35); }
+    .btn.ghost { border-color: rgba(255,255,255,.5); color: #fff; }
+    .btn.ghost:hover { background: #fff; color: var(--primary); }
+    .socials { display: flex; gap: 14px; margin-top: 28px; }
+    .socials a {
+      width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center;
+      background: rgba(255,255,255,.08); color: #fff; font-size: 1.1rem; transition: background .2s, transform .2s;
+    }
+    .socials a:hover { background: var(--third); transform: translateY(-3px); }
+
+    .portrait { position: relative; justify-self: center; width: min(320px, 70vw); aspect-ratio: 1; }
+    .portrait .ring {
+      position: absolute; inset: -14px; border-radius: 50%;
+      background: conic-gradient(var(--third) 0 25%, transparent 25% 50%, #0039AC 50% 75%, transparent 75%);
+      animation: spin 14s linear infinite; opacity: .9;
+    }
+    .portrait .ring::after { content: ""; position: absolute; inset: 6px; border-radius: 50%; background: var(--primary); }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .portrait img { position: relative; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 6px solid #fff; background: #fff; }
+    .portrait .chip-float {
+      position: absolute; background: #fff; color: var(--primary); font-weight: 900; font-size: .82rem;
+      padding: 8px 14px; border-radius: 999px; box-shadow: var(--shadow); white-space: nowrap;
+      animation: bob 4s ease-in-out infinite;
+    }
+    .portrait .chip-float i { color: var(--third); margin-right: 6px; }
+    .portrait .c1 { top: 8%; left: -18%; }
+    .portrait .c2 { bottom: 12%; right: -16%; animation-delay: -2s; }
+    @keyframes bob { 50% { transform: translateY(-10px); } }
+
+    .scroll-hint { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #9fb6e6; font-size: 1.3rem; animation: bob 2s ease-in-out infinite; }
+
+    /* ---------- Stats strip ---------- */
+    .stats { margin-top: -54px; position: relative; z-index: 2; }
+    .stats .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+    .stat { padding: 24px 18px; text-align: center; border-right: 1px solid #eee; }
+    .stat:last-child { border-right: 0; }
+    .stat .n { font-family: "Roboto Slab", serif; font-size: 2.1rem; font-weight: 700; color: var(--primary); line-height: 1; }
+    .stat .n small { color: var(--third); font-size: 1.2rem; }
+    .stat .l { font-size: .85rem; margin-top: 6px; font-weight: 700; }
+
+    /* ---------- Sections ---------- */
+    section { padding: 90px 0 30px; scroll-margin-top: 40px; }
+    .sec-head { margin-bottom: 36px; }
+    .sec-head .eyebrow { display: block; margin-bottom: 4px; }
+    .sec-head h2 { margin: 0; font-size: clamp(1.8rem, 3.6vw, 2.5rem); }
+    .sec-head h2::after { content: ""; display: block; width: 64px; height: 4px; background: var(--third); border-radius: 4px; margin-top: 10px; }
+
+    .card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); }
+
+    /* Skills */
+    .skills { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .skill { padding: 24px 20px; transition: transform .25s, box-shadow .25s; border-top: 4px solid var(--secondary); }
+    .skill:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,31,90,.15); border-top-color: var(--third); }
+    .skill .ic { width: 48px; height: 48px; border-radius: 12px; display: grid; place-items: center; background: rgba(0,57,172,.1); color: var(--secondary); font-size: 1.3rem; margin-bottom: 12px; }
+    .skill h3 { margin: 0 0 10px; font-size: 1.1rem; }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip { background: #fff; border: 1px solid #d9d9d9; color: var(--emphasis); font-size: .8rem; font-weight: 700; padding: 4px 11px; border-radius: 999px; }
+
+    /* Timeline */
+    .timeline { position: relative; padding-left: 34px; }
+    .timeline::before { content: ""; position: absolute; left: 10px; top: 6px; bottom: 6px; width: 3px; background: linear-gradient(var(--third), var(--secondary)); border-radius: 3px; }
+    .t-item { position: relative; margin-bottom: 26px; }
+    .t-item::before {
+      content: ""; position: absolute; left: -31px; top: 22px; width: 15px; height: 15px; border-radius: 50%;
+      background: #fff; border: 4px solid var(--third); box-shadow: 0 0 0 4px var(--bg);
+    }
+    .t-card { padding: 22px 24px; transition: transform .25s; }
+    .t-card:hover { transform: translateX(6px); }
+    .t-top { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; }
+    .t-card h3 { margin: 0; font-size: 1.2rem; }
+    .t-card .org { color: var(--secondary); font-weight: 900; }
+    .when { font-size: .82rem; font-weight: 900; color: var(--third); background: rgba(243,137,11,.12); padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+    .where { font-size: .85rem; margin-top: 2px; }
+    .where i { color: var(--secondary); margin-right: 5px; }
+    .hl { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 16px; }
+    .hl div { background: #fff; border-radius: 10px; padding: 12px 14px; font-size: .92rem; border-left: 3px solid var(--secondary); }
+    .hl b { display: block; color: var(--primary); font-size: .85rem; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 2px; }
+    .t-card p { margin: 10px 0 0; }
+
+    /* Badges band */
+    .band {
+      background: linear-gradient(160deg, var(--primary), var(--primary-2));
+      padding: 80px 0; margin-top: 70px; color: #c9d4ea; position: relative; overflow: hidden;
+    }
+    .band::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,.08) 1px, transparent 1px); background-size: 22px 22px; }
+    .band .container { position: relative; }
+    .band .sec-head h2 { color: #fff; }
+    .badges { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; perspective: 900px; }
+    .badge {
+      text-align: center; padding: 28px 20px 22px; border-radius: var(--radius);
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+      transition: transform .15s ease-out, background .3s, border-color .3s; transform-style: preserve-3d;
+    }
+    .badge:hover { background: rgba(255,255,255,.09); border-color: var(--third); }
+    .badge img { width: 150px; height: 150px; object-fit: contain; filter: drop-shadow(0 12px 20px rgba(0,0,0,.35)); transform: translateZ(40px); }
+    .badge h3 { color: #fff; font-size: 1.05rem; margin: 16px 0 4px; }
+    .badge .kind { color: var(--third); font-weight: 900; font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; }
+    .badge .date { font-size: .85rem; }
+    .badge .links { display: flex; justify-content: center; gap: 10px; margin-top: 14px; }
+    .badge .links a { font-size: .82rem; font-weight: 900; color: #fff; border: 1px solid rgba(255,255,255,.35); padding: 6px 14px; border-radius: 999px; transition: background .2s, border-color .2s; }
+    .badge .links a:hover { background: var(--third); border-color: var(--third); }
+
+    /* Certificates with filter */
+    .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
+    .filters button {
+      font: inherit; font-weight: 900; font-size: .85rem; padding: 7px 16px; border-radius: 999px; cursor: pointer;
+      border: 2px solid var(--primary); background: transparent; color: var(--primary); transition: background .2s, color .2s;
+    }
+    .filters button.on, .filters button:hover { background: var(--primary); color: #fff; }
+    .certs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .cert {
+      display: flex; gap: 16px; align-items: center; padding: 16px 18px; color: inherit;
+      border-left: 4px solid var(--third); transition: transform .2s, opacity .3s;
+    }
+    .cert.hide { display: none; }
+    a.cert:hover { transform: translateY(-3px); }
+    .cert .logo { flex: 0 0 46px; height: 46px; border-radius: 10px; display: grid; place-items: center; font-size: 1.3rem; color: #fff; background: var(--secondary); }
+    .cert .logo.aws { background: #232F3E; }
+    .cert .logo.udemy { background: #5624D0; }
+    .cert .logo.db { background: #FF3621; }
+    .cert .t { color: var(--emphasis); font-weight: 900; line-height: 1.3; }
+    .cert .s { font-size: .85rem; color: var(--secondary); font-weight: 700; }
+    .cert .go { margin-left: auto; color: var(--third); font-size: .9rem; white-space: nowrap; font-weight: 900; }
+    .new { background: var(--secondary); color: #fff; font-size: .65rem; padding: 2px 8px; border-radius: 999px; margin-left: 6px; vertical-align: 2px; }
+
+    /* Projects */
+    .projects { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+    .project { color: inherit; overflow: hidden; display: flex; flex-direction: column; transition: transform .25s, box-shadow .25s; }
+    .project:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,31,90,.16); }
+    .project .head {
+      height: 130px; position: relative; display: flex; align-items: flex-end; padding: 16px 20px;
+      background: linear-gradient(135deg, var(--secondary), var(--primary)); color: #fff;
+    }
+    .project .head i { position: absolute; right: 20px; top: 18px; font-size: 3.2rem; opacity: .25; }
+    .project .head .tag { background: var(--third); color: #fff; font-weight: 900; font-size: .75rem; padding: 3px 10px; border-radius: 999px; }
+    .project .body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+    .project h3 { margin: 0 0 4px; font-size: 1.15rem; }
+    .project .meta { font-size: .82rem; margin-bottom: 8px; }
+    .project .more { margin-top: auto; padding-top: 12px; font-weight: 900; color: var(--third); }
+    .project .more i { transition: transform .2s; }
+    .project:hover .more i { transform: translateX(5px); }
+
+    .works { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 22px; }
+    .work { overflow: hidden; color: inherit; position: relative; }
+    .work img { width: 100%; height: 150px; object-fit: cover; display: block; background: #fff; transition: transform .4s; }
+    .work:hover img { transform: scale(1.08); }
+    .work .c { padding: 12px 14px; }
+    .work .t { color: var(--primary); font-weight: 900; font-size: .92rem; line-height: 1.3; }
+    .work .s { font-size: .78rem; }
+
+    /* Education + languages */
+    .two { display: grid; grid-template-columns: 1.3fr 1fr; gap: 28px; }
+    .edu { padding: 22px 24px; margin-bottom: 16px; display: flex; gap: 18px; align-items: center; }
+    .edu .ic { flex: 0 0 56px; height: 56px; border-radius: 14px; background: var(--primary); color: var(--third); display: grid; place-items: center; font-size: 1.5rem; }
+    .edu h3 { margin: 0; font-size: 1.1rem; }
+    .edu .gpa { margin-left: auto; text-align: right; }
+    .edu .gpa b { font-family: "Roboto Slab", serif; font-size: 1.5rem; color: var(--primary); display: block; line-height: 1; }
+    .edu .gpa span { font-size: .75rem; font-weight: 700; }
+    .lang { padding: 18px 22px; margin-bottom: 14px; }
+    .lang .row { display: flex; justify-content: space-between; align-items: baseline; }
+    .lang .name { color: var(--emphasis); font-weight: 900; }
+    .lang .lvl { color: var(--secondary); font-weight: 900; font-size: .9rem; }
+    .cefr { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-top: 10px; }
+    .cefr span { height: 8px; border-radius: 4px; background: #d6d6d6; transition: background .4s; }
+    .cefr span.on { background: var(--third); }
+    .lang .note { font-size: .8rem; margin-top: 6px; }
+
+    /* Contact */
+    .contact { text-align: center; padding: 70px 24px; margin: 80px 0 0; background: #fff; }
+    .contact h2 { margin: 0 0 8px; font-size: clamp(1.8rem, 4vw, 2.6rem); }
+    .contact p { max-width: 520px; margin: 0 auto 24px; }
+    .contact .btn.dark { background: var(--primary); color: #fff; }
+    .contact .btn.line { border-color: var(--primary); color: var(--primary); }
+    .contact .btn.line:hover { background: var(--primary); color: #fff; }
+    footer { text-align: center; padding: 22px; font-size: .85rem; background: var(--primary-2); color: #9fb6e6; }
+
+    /* Reveal-on-scroll */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+
+    @media (max-width: 960px) {
+      .skills { grid-template-columns: repeat(2, 1fr); }
+      .works { grid-template-columns: repeat(2, 1fr); }
+      .two { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px) {
+      .menu-btn { display: block; }
+      nav ul {
+        position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; gap: 0;
+        background: var(--primary); padding: 8px 16px 16px; display: none;
+      }
+      nav ul.open { display: flex; }
+      nav ul a { display: block; padding: 10px 12px; }
+      nav.menu-open { background: var(--primary); }
+      .hero .container { grid-template-columns: 1fr; text-align: center; padding-top: 110px; }
+      .hero p.lead { margin: 0 auto; }
+      .cta, .socials { justify-content: center; }
+      .portrait { order: -1; width: 210px; }
+      .portrait .chip-float { display: none; }
+      .stats .grid4 { grid-template-columns: repeat(2, 1fr); }
+      .stat:nth-child(2) { border-right: 0; }
+      .stat:nth-child(-n+2) { border-bottom: 1px solid #eee; }
+      .badges, .certs, .projects, .hl { grid-template-columns: 1fr; }
+      .badges { max-width: 360px; margin: 0 auto; }
+    }
+
+    /* ================= MOBILE REDESIGN (desktop untouched) ================= */
+    @media (max-width: 760px) {
+      body { font-size: 15px; }
+      .container { padding: 0 18px; }
+      section { padding: 56px 0 8px; }
+      .sec-head { margin-bottom: 20px; }
+      .sec-head h2 { font-size: 1.7rem; }
+      .sec-head h2::after { width: 48px; height: 3px; margin-top: 8px; }
+
+      /* Hero: compact and airy */
+      .hero { min-height: auto; }
+      .hero .container { gap: 22px; padding-top: 92px; padding-bottom: 84px; }
+      .portrait { width: 160px; }
+      .portrait .ring { inset: -9px; }
+      .portrait img { border-width: 4px; }
+      .hero h1 { font-size: 2.15rem; margin: 6px 0 8px; }
+      .typed { font-size: 1.05rem; min-height: 1.8em; }
+      .hero p.lead { font-size: .97rem; }
+      .cta { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 22px; }
+      .cta .btn { justify-content: center; padding: 12px 10px; font-size: .9rem; }
+      .socials { margin-top: 20px; }
+      .scroll-hint { display: none; }
+
+      /* Stats: tighter tiles */
+      .stats { margin-top: -40px; }
+      .stat { padding: 16px 8px; }
+      .stat .n { font-size: 1.6rem; }
+      .stat .n small { font-size: .95rem; }
+      .stat .l { font-size: .74rem; line-height: 1.3; }
+
+      /* Swipeable carousels */
+      .skills, .badges, .works {
+        display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory;
+        margin: 0 -18px; padding: 4px 18px 18px; scrollbar-width: none; max-width: none;
+      }
+      .skills::-webkit-scrollbar, .badges::-webkit-scrollbar, .works::-webkit-scrollbar { display: none; }
+      .skills > *, .badges > *, .works > * { scroll-snap-align: start; flex: 0 0 78%; }
+      .works > * { flex-basis: 64%; }
+
+      .skill { padding: 18px; }
+      .skill:hover { transform: none; }
+      .skill .ic { width: 40px; height: 40px; font-size: 1.1rem; margin-bottom: 10px; }
+
+      /* Timeline: reclaim horizontal space */
+      .timeline { padding-left: 20px; }
+      .timeline::before { left: 4px; }
+      .t-item { margin-bottom: 16px; }
+      .t-item::before { left: -22px; top: 20px; width: 13px; height: 13px; border-width: 3px; }
+      .t-card { padding: 16px; }
+      .t-card:hover { transform: none; }
+      .t-top { flex-direction: column; gap: 6px; }
+      .t-card h3 { font-size: 1.05rem; line-height: 1.3; }
+      .t-card .org { display: block; font-size: .92rem; }
+      .hl { gap: 8px; margin-top: 12px; }
+      .hl div { padding: 10px 12px; font-size: .88rem; line-height: 1.5; }
+
+      /* Badges band */
+      .band { padding: 56px 0 40px; margin-top: 40px; }
+      .badge { padding: 22px 16px 18px; }
+      .badge img { width: 120px; height: 120px; }
+
+      /* Certificates: compact tappable rows */
+      .filters { flex-wrap: nowrap; overflow-x: auto; margin: 0 -18px 16px; padding: 0 18px; scrollbar-width: none; }
+      .filters::-webkit-scrollbar { display: none; }
+      .filters button { flex: 0 0 auto; }
+      .certs { gap: 10px; }
+      .cert { padding: 12px 14px; gap: 12px; border-left-width: 3px; }
+      .cert .logo { flex: 0 0 38px; height: 38px; font-size: 1rem; border-radius: 9px; }
+      .cert > div:nth-child(2) { flex: 1; min-width: 0; }
+      .cert .t { font-size: .9rem; }
+      .cert .s { font-size: .78rem; }
+      .cert .go { font-size: 0; margin-left: 4px; }
+      .cert .go i { font-size: 1rem; }
+
+      /* Projects */
+      .projects { gap: 14px; }
+      .project .head { height: 84px; padding: 12px 16px; }
+      .project .head i { font-size: 2.2rem; top: 14px; }
+      .project .body { padding: 16px; }
+      .project h3 { font-size: 1.05rem; }
+      .project:hover { transform: none; }
+      .works { margin-top: 16px; }
+      .work img { height: 130px; }
+
+      /* Education & languages */
+      .edu { padding: 14px 16px; gap: 14px; margin-bottom: 12px; }
+      .edu .ic { flex: 0 0 44px; height: 44px; font-size: 1.15rem; border-radius: 12px; }
+      .edu > div:nth-child(2) { flex: 1; min-width: 0; font-size: .82rem; }
+      .edu h3 { font-size: .98rem; line-height: 1.3; }
+      .edu .gpa b { font-size: 1.25rem; }
+      .two > div + div .sec-head { margin-top: 26px; }
+      .lang { padding: 14px 16px; margin-bottom: 10px; }
+
+      /* Contact */
+      .contact { padding: 50px 18px; margin-top: 50px; }
+      .contact .cta { grid-template-columns: 1fr; }
+      .contact .btn { width: 100%; }
+    }
+
+    /* "Swipe" hint shown above carousels on phones only */
+    .swipe-hint { display: flex; align-items: center; gap: 6px; font-size: .75rem; font-weight: 900; color: var(--third); letter-spacing: .08em; text-transform: uppercase; margin: -8px 0 10px; }
+    .band .swipe-hint { color: #9fb6e6; }
+    @media (min-width: 761px) { .swipe-hint { display: none; } }
+  </style>
+</head>
+<body>
+  <div id="progress"></div>
+
+  <nav id="nav">
+    <div class="container">
+      <a href="#home" class="brand">JM<span>.</span>Aragon</a>
+      <button class="menu-btn" aria-label="Open menu" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
+      <ul id="menu">
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#badges">Badges</a></li>
+        <li><a href="#certificates">Certificates</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <header class="hero" id="home">
+    <div class="container">
+      <div>
+        <span class="eyebrow">Hello, I'm</span>
+        <h1>Juan Manuel <span class="last">Aragon Armas</span></h1>
+        <div class="typed">I work on <span class="word" id="typed">data pipelines</span></div>
+        <p class="lead">Data Engineer in Turin, building production pipelines on Databricks with Python, PySpark and SQL, and applying ML to vehicle telematics data.</p>
+        <div class="cta">
+          <a class="btn orange" href="assets/docs/JuanAragon_CV_EN.pdf" download><i class="fa-solid fa-download"></i> Download CV</a>
+          <a class="btn ghost" href="#experience"><i class="fa-solid fa-briefcase"></i> See my work</a>
+        </div>
+        <div class="socials">
+          <a href="https://www.linkedin.com/in/juanMAragon" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="https://github.com/juanMAragon" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+      <div class="portrait">
+        <div class="ring"></div>
+        <img src="assets/img/person.jpg" alt="Juan Manuel Aragon Armas">
+        <div class="chip-float c1"><i class="fa-solid fa-database"></i>Databricks</div>
+        <div class="chip-float c2"><i class="fa-solid fa-location-dot"></i>Turin, Italy</div>
+      </div>
+    </div>
+    <a href="#stats" class="scroll-hint" aria-label="Scroll down"><i class="fa-solid fa-chevron-down"></i></a>
+  </header>
+
+  <!-- ===== STATS ===== -->
+  <div class="stats" id="stats">
+    <div class="container">
+      <div class="grid4 reveal">
+        <div class="stat"><div class="n" data-count="4"><span>0</span><small>+</small></div><div class="l">Years in data engineering</div></div>
+        <div class="stat"><div class="n" data-count="7"><span>0</span></div><div class="l">Trainings &amp; badges</div></div>
+        <div class="stat"><div class="n" data-count="108"><span>0</span><small>/110</small></div><div class="l">MSc Data Science GPA</div></div>
+        <div class="stat"><div class="n">ICCV<small>'23</small></div><div class="l">Publication contributor</div></div>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <!-- ===== SKILLS ===== -->
+    <section id="skills">
+      <div class="container">
+        <div class="sec-head reveal"><span class="eyebrow">What I use</span><h2>Skills</h2></div>
+        <div class="swipe-hint"><i class="fa-solid fa-hand-pointer"></i> Swipe <i class="fa-solid fa-arrow-right-long"></i></div>
+        <div class="skills">
+          <div class="card skill reveal">
+            <div class="ic"><i class="fa-solid fa-diagram-project"></i></div>
+            <h3>Data Engineering</h3>
+            <div class="chips"><span class="chip">PySpark</span><span class="chip">Databricks</span><span class="chip">Delta Lake</span></div>
+          </div>
+          <div class="card skill reveal">
+            <div class="ic"><i class="fa-solid fa-brain"></i></div>
+            <h3>AI &amp; Machine Learning</h3>
+            <div class="chips"><span class="chip">PyTorch</span><span class="chip">scikit-learn</span><span class="chip">MLflow</span><span class="chip">Generative AI</span></div>
+          </div>
+          <div class="card skill reveal">
+            <div class="ic"><i class="fa-solid fa-code"></i></div>
+            <h3>Programming</h3>
+            <div class="chips"><span class="chip">Python</span><span class="chip">SQL</span><span class="chip">Bash</span></div>
+          </div>
+          <div class="card skill reveal">
+            <div class="ic"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+            <h3>Tools</h3>
+            <div class="chips"><span class="chip">Git</span><span class="chip">AWS</span><span class="chip">Power BI</span><span class="chip">OpenStreetMap</span><span class="chip">KeplerGL</span><span class="chip">H3</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== EXPERIENCE ===== -->
+    <section id="experience">
+      <div class="container">
+        <div class="sec-head reveal"><span class="eyebrow">Where I've worked</span><h2>Experience</h2></div>
+        <div class="timeline">
+          <div class="t-item reveal">
+            <div class="card t-card">
+              <div class="t-top">
+                <h3>Data Analyst &amp; Data Engineer <span class="org">· AizoOn Technology Consulting</span></h3>
+                <span class="when">Nov 2022 – Present</span>
+              </div>
+              <div class="where"><i class="fa-solid fa-location-dot"></i>Turin, Italy</div>
+              <div class="hl">
+                <div><b>AI / ML</b>Apply clustering and predictive modeling techniques to GPS and vehicle telematics data to identify driving patterns and support vehicle performance analysis.</div>
+                <div><b>Data engineering</b>Develop and maintain production data pipelines and Databricks jobs using Python, PySpark, and SQL to process vehicle telematics data for fuel consumption analysis, with a focus on processing efficiency and cloud cost optimization.</div>
+                <div><b>Data visualization</b>Develop interactive geospatial visualizations of vehicle routes and driving behavior, enabling users to explore telematics data and compare driving patterns across journeys.</div>
+                <div><b>Platform &amp; reliability</b>Troubleshoot and optimize Databricks workflows, addressing data quality, execution performance, and production reliability issues.</div>
+              </div>
+            </div>
+          </div>
+          <div class="t-item reveal">
+            <div class="card t-card">
+              <div class="t-top">
+                <h3>Python Tutor <span class="org">· Kodland</span></h3>
+                <span class="when">Jan 2026 – Aug 2026</span>
+              </div>
+              <div class="where"><i class="fa-solid fa-location-dot"></i>Turin, Italy</div>
+              <p>Taught Python and AI to students aged 10–15 through hands-on projects.</p>
+            </div>
+          </div>
+          <div class="t-item reveal">
+            <div class="card t-card">
+              <div class="t-top">
+                <h3>Data Engineer Internship <span class="org">· AizoOn Technology Consulting</span></h3>
+                <span class="when">Apr 2022 – Jul 2022</span>
+              </div>
+              <div class="where"><i class="fa-solid fa-location-dot"></i>Turin, Italy</div>
+              <p>Developed an <b>art recommender system</b>: extracts visual features from images to suggest artworks matching a user's previous preferences.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== BADGES ===== -->
+    <div class="band" id="badges">
+      <div class="container">
+        <div class="sec-head reveal"><span class="eyebrow">Verified by Databricks</span><h2>Databricks Badges</h2></div>
+        <div class="swipe-hint"><i class="fa-solid fa-hand-pointer"></i> Swipe <i class="fa-solid fa-arrow-right-long"></i></div>
+        <div class="badges">
+          <div class="badge reveal">
+            <img src="assets/img/badges/lakeflow-jobs.png" alt="Databricks badge: Deploy Workloads with Lakeflow Jobs">
+            <div class="kind">Knowledge Badge</div>
+            <h3>Deploy Workloads with Lakeflow Jobs</h3>
+            <div class="date">November 10, 2026</div>
+            <div class="links"><a href="https://credentials.databricks.com/b9c8bd0d-ccf9-4fcb-9f74-649759612424" target="_blank" rel="noopener"><i class="fa-solid fa-circle-check"></i> Verify</a></div>
+          </div>
+          <div class="badge reveal">
+            <img src="assets/img/badges/lakeflow-connect.png" alt="Databricks badge: Data Ingestion with Lakeflow Connect">
+            <div class="kind">Knowledge Badge</div>
+            <h3>Data Ingestion with Lakeflow Connect</h3>
+            <div class="date">October 15, 2026</div>
+            <div class="links"><a href="https://credentials.databricks.com/d30f7025-c1dd-445c-a088-cbcf19896d4f" target="_blank" rel="noopener"><i class="fa-solid fa-circle-check"></i> Verify</a></div>
+          </div>
+          <div class="badge reveal">
+            <img src="assets/img/badges/databricks-fundamentals.png" alt="Databricks badge: Databricks Fundamentals">
+            <div class="kind">Academy Accreditation</div>
+            <h3>Databricks Fundamentals</h3>
+            <div class="date">August 5, 2025</div>
+            <div class="links">
+              <a href="https://credentials.databricks.com/71efc4ac-9cf9-4383-8690-642b7b989c5f" target="_blank" rel="noopener"><i class="fa-solid fa-circle-check"></i> Verify</a>
+              <a href="assets/docs/certificates/databricks-fundamentals.pdf" target="_blank" rel="noopener"><i class="fa-solid fa-file-pdf"></i> PDF</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CERTIFICATES ===== -->
+    <section id="certificates">
+      <div class="container">
+        <div class="sec-head reveal"><span class="eyebrow">Always learning</span><h2>Trainings &amp; Certificates</h2></div>
+        <div class="filters reveal" role="group" aria-label="Filter certificates">
+          <button class="on" data-f="all">All</button>
+          <button data-f="databricks">Databricks</button>
+          <button data-f="cloud">Cloud</button>
+        </div>
+        <div class="certs">
+          <a class="card cert reveal" data-cat="databricks" href="https://credentials.databricks.com/b9c8bd0d-ccf9-4fcb-9f74-649759612424" target="_blank" rel="noopener">
+            <div class="logo db"><i class="fa-solid fa-layer-group"></i></div>
+            <div><div class="t">Deploy Workloads with Lakeflow Jobs<span class="new">NEW</span></div><div class="s">Databricks Academy · Nov 2026</div></div>
+            <span class="go">Verify <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+          </a>
+          <a class="card cert reveal" data-cat="databricks" href="https://credentials.databricks.com/d30f7025-c1dd-445c-a088-cbcf19896d4f" target="_blank" rel="noopener">
+            <div class="logo db"><i class="fa-solid fa-layer-group"></i></div>
+            <div><div class="t">Data Ingestion with Lakeflow Connect<span class="new">NEW</span></div><div class="s">Databricks Academy · Oct 2026</div></div>
+            <span class="go">Verify <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+          </a>
+          <a class="card cert reveal" data-cat="databricks" href="assets/docs/certificates/databricks-get-started-days.pdf" target="_blank" rel="noopener">
+            <div class="logo db"><i class="fa-solid fa-layer-group"></i></div>
+            <div><div class="t">Databricks Get Started Days (Data Eng. + Generative AI)</div><div class="s">Databricks Academy · Sep 2026</div></div>
+            <span class="go">PDF <i class="fa-solid fa-file-pdf"></i></span>
+          </a>
+          <a class="card cert reveal" data-cat="databricks" href="assets/docs/certificates/databricks-data-engineer-associate-prep.pdf" target="_blank" rel="noopener">
+            <div class="logo udemy"><i class="fa-solid fa-graduation-cap"></i></div>
+            <div><div class="t">Databricks Certified Data Engineer Associate – Preparation</div><div class="s">Udemy · Dec 2025</div></div>
+            <span class="go">PDF <i class="fa-solid fa-file-pdf"></i></span>
+          </a>
+          <a class="card cert reveal" data-cat="databricks" href="https://credentials.databricks.com/71efc4ac-9cf9-4383-8690-642b7b989c5f" target="_blank" rel="noopener">
+            <div class="logo db"><i class="fa-solid fa-layer-group"></i></div>
+            <div><div class="t">Academy Accreditation – Databricks Fundamentals</div><div class="s">Databricks Academy · Aug 2025</div></div>
+            <span class="go">Verify <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+          </a>
+          <a class="card cert reveal" data-cat="databricks" href="assets/docs/certificates/unity-catalog.pdf" target="_blank" rel="noopener">
+            <div class="logo db"><i class="fa-solid fa-layer-group"></i></div>
+            <div><div class="t">Data Management &amp; Governance with Unity Catalog</div><div class="s">Databricks Academy · Aug 2025</div></div>
+            <span class="go">PDF <i class="fa-solid fa-file-pdf"></i></span>
+          </a>
+          <a class="card cert reveal" data-cat="cloud" href="assets/docs/certificates/aws-cloud-practitioner-prep.pdf" target="_blank" rel="noopener">
+            <div class="logo aws"><i class="fa-brands fa-aws"></i></div>
+            <div><div class="t">Ultimate AWS Certified Cloud Practitioner CLF-C02</div><div class="s">Udemy · Aug 2024</div></div>
+            <span class="go">PDF <i class="fa-solid fa-file-pdf"></i></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PROJECTS ===== -->
+    <section id="projects">
+      <div class="container">
+        <div class="sec-head reveal"><span class="eyebrow">Research &amp; side work</span><h2>Projects</h2></div>
+        <div class="projects">
+          <a class="card project reveal" href="https://arxiv.org/abs/2307.08417" target="_blank" rel="noopener">
+            <div class="head"><i class="fa-solid fa-map-location-dot"></i><span class="tag">MSc Thesis · ICCV 2023</span></div>
+            <div class="body">
+              <h3>Divide &amp; Classify</h3>
+              <div class="meta">Jul 2022 – Mar 2023 · Politecnico di Torino</div>
+              <p>Built classification models for visual geolocalization in large-scale urban scenarios; contributed to an ICCV 2023 publication.</p>
+              <span class="more">Read on arXiv <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </a>
+          <a class="card project reveal" href="assets/docs/DomAdap.pdf" target="_blank" rel="noopener">
+            <div class="head" style="background:linear-gradient(135deg,#0039AC,#00153F)"><i class="fa-solid fa-road"></i><span class="tag">Computer Vision</span></div>
+            <div class="body">
+              <h3>Real-time Domain Adaptation in Semantic Segmentation</h3>
+              <div class="meta">Mar 2021 – Jul 2021 · Politecnico di Torino</div>
+              <p>Explored domain adaptation with self-supervised learning and pseudo-label generation.</p>
+              <span class="more">Read the report <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </a>
+        </div>
+        <div class="swipe-hint" style="margin-top:22px"><i class="fa-solid fa-hand-pointer"></i> Swipe <i class="fa-solid fa-arrow-right-long"></i></div>
+        <div class="works">
+          <a class="card work reveal" href="assets/docs/networkDyn.pdf" target="_blank" rel="noopener">
+            <img src="assets/img/work/work-netdyn.png" alt="" loading="lazy">
+            <div class="c"><div class="t">Network Dynamics</div><div class="s">Python · Graph Theory</div></div>
+          </a>
+          <a class="card work reveal" href="assets/docs/ml4iot.pdf" target="_blank" rel="noopener">
+            <img src="assets/img/work/ml4iot.png" alt="" loading="lazy">
+            <div class="c"><div class="t">Edge-Cloud Collaborative Inference</div><div class="s">TensorFlow Lite · ML for IoT</div></div>
+          </a>
+          <a class="card work reveal" href="assets/docs/sigProc.pdf" target="_blank" rel="noopener">
+            <img src="assets/img/work/sigproc.png" alt="" loading="lazy">
+            <div class="c"><div class="t">Signal Processing</div><div class="s">MATLAB · Bioinformatics · Audio</div></div>
+          </a>
+          <a class="card work reveal" href="assets/docs/isomorphism.pdf" target="_blank" rel="noopener">
+            <img src="assets/img/work/isomor.png" alt="" loading="lazy">
+            <div class="c"><div class="t">Graph Isomorphism</div><div class="s">C++ · Graph Theory</div></div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== EDUCATION & LANGUAGES ===== -->
+    <section id="education">
+      <div class="container two">
+        <div>
+          <div class="sec-head reveal"><span class="eyebrow">Politecnico di Torino</span><h2>Education</h2></div>
+          <div class="card edu reveal">
+            <div class="ic"><i class="fa-solid fa-graduation-cap"></i></div>
+            <div><h3>MSc Data Science and Engineering</h3><div>Politecnico di Torino · Oct 2020 – Apr 2023</div></div>
+            <div class="gpa"><b>108</b><span>/110 GPA</span></div>
+          </div>
+          <div class="card edu reveal">
+            <div class="ic"><i class="fa-solid fa-laptop-code"></i></div>
+            <div><h3>BSc Software Engineering</h3><div>Politecnico di Torino · Oct 2017 – Dec 2020</div></div>
+            <div class="gpa"><b>97</b><span>/110 GPA</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="sec-head reveal"><span class="eyebrow">I speak</span><h2>Languages</h2></div>
+          <div class="card lang reveal">
+            <div class="row"><span class="name">Spanish</span><span class="lvl">Native</span></div>
+            <div class="cefr" data-level="6"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          </div>
+          <div class="card lang reveal">
+            <div class="row"><span class="name">Italian</span><span class="lvl">C1</span></div>
+            <div class="cefr" data-level="5"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="note">CELI B2, 2017</div>
+          </div>
+          <div class="card lang reveal">
+            <div class="row"><span class="name">English</span><span class="lvl">C1</span></div>
+            <div class="cefr" data-level="5"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="note">TOEFL C1, 2020</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <div class="contact" id="contact">
+      <h2 class="reveal">Let's work together</h2>
+      <p class="reveal">Open to conversations about data engineering, Databricks and ML projects. The best way to reach me is a message on LinkedIn.</p>
+      <div class="cta reveal" style="justify-content:center">
+        <a class="btn dark" href="https://www.linkedin.com/in/juanMAragon" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin-in"></i> Message me on LinkedIn</a>
+        <a class="btn line" href="https://github.com/juanMAragon" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>© 2026 Juan Manuel Aragon Armas · Turin, Italy</footer>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var nav = document.getElementById('nav');
+      var bar = document.getElementById('progress');
+
+      // Nav background + scroll progress
+      function onScroll() {
+        var y = window.scrollY, h = document.documentElement.scrollHeight - innerHeight;
+        nav.classList.toggle('scrolled', y > 40);
+        bar.style.width = (h > 0 ? (y / h) * 100 : 0) + '%';
+      }
+      addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+      // Mobile menu
+      var btn = document.querySelector('.menu-btn'), menu = document.getElementById('menu');
+      btn.addEventListener('click', function () {
+        var open = menu.classList.toggle('open');
+        nav.classList.toggle('menu-open', open);
+        btn.setAttribute('aria-expanded', open);
+      });
+      menu.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () { menu.classList.remove('open'); nav.classList.remove('menu-open'); });
+      });
+
+      // Active nav link
+      var links = {};
+      menu.querySelectorAll('a').forEach(function (a) { links[a.getAttribute('href').slice(1)] = a; });
+      var spy = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (e.isIntersecting && links[e.target.id]) {
+            Object.values(links).forEach(function (l) { l.classList.remove('active'); });
+            links[e.target.id].classList.add('active');
+          }
+        });
+      }, { rootMargin: '-45% 0px -50% 0px' });
+      Object.keys(links).forEach(function (id) { var el = document.getElementById(id); if (el) spy.observe(el); });
+
+      // Reveal on scroll, with a small stagger, plus counters and CEFR meters
+      function count(el) {
+        var target = +el.dataset.count, span = el.querySelector('span'), start = null;
+        if (reduce) { span.textContent = target; return; }
+        function step(t) {
+          if (!start) start = t;
+          var p = Math.min((t - start) / 1200, 1);
+          span.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+          if (p < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          var el = e.target;
+          var sibs = Array.prototype.filter.call(el.parentNode.children, function (c) { return c.classList.contains('reveal'); });
+          el.style.transitionDelay = (reduce ? 0 : Math.min(sibs.indexOf(el), 6) * 90) + 'ms';
+          el.classList.add('in');
+          el.querySelectorAll('[data-count]').forEach(count);
+          el.querySelectorAll('.cefr').forEach(function (m) {
+            var lvl = +m.dataset.level;
+            m.querySelectorAll('span').forEach(function (s, i) {
+              setTimeout(function () { if (i < lvl) s.classList.add('on'); }, reduce ? 0 : i * 120);
+            });
+          });
+          io.unobserve(el);
+        });
+      }, { threshold: 0.12 });
+      document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+
+      // Typing effect
+      var words = ['data pipelines', 'PySpark & Databricks', 'vehicle telematics', 'machine learning', 'geospatial analytics'];
+      var typed = document.getElementById('typed');
+      if (!reduce) {
+        var wi = 0, ci = words[0].length, del = true;
+        (function tick() {
+          var w = words[wi];
+          ci += del ? -1 : 1;
+          typed.textContent = w.slice(0, ci);
+          var wait = del ? 45 : 85;
+          if (!del && ci === w.length) { del = true; wait = 1800; }
+          else if (del && ci === 0) { del = false; wi = (wi + 1) % words.length; wait = 300; }
+          setTimeout(tick, wait);
+        })();
+      }
+
+      // 3D tilt on badges
+      if (!reduce && matchMedia('(hover: hover)').matches) {
+        document.querySelectorAll('.badge').forEach(function (b) {
+          b.addEventListener('mousemove', function (ev) {
+            var r = b.getBoundingClientRect();
+            var x = (ev.clientX - r.left) / r.width - .5, y = (ev.clientY - r.top) / r.height - .5;
+            b.style.transform = 'rotateY(' + (x * 16) + 'deg) rotateX(' + (-y * 16) + 'deg)';
+          });
+          b.addEventListener('mouseleave', function () { b.style.transform = ''; });
+        });
+      }
+
+      // Certificate filter
+      var fbtns = document.querySelectorAll('.filters button');
+      fbtns.forEach(function (fb) {
+        fb.addEventListener('click', function () {
+          fbtns.forEach(function (x) { x.classList.remove('on'); });
+          fb.classList.add('on');
+          var f = fb.dataset.f;
+          document.querySelectorAll('.cert').forEach(function (c) {
+            c.classList.toggle('hide', f !== 'all' && c.dataset.cat !== f);
+          });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
