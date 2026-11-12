@@ -6,6 +6,26 @@
   <title>Juan Manuel Aragon Armas · Data Engineer</title>
   <meta name="description" content="Juan Manuel Aragon Armas (Juan Aragon) — Data Engineer in Turin, Italy. Databricks, PySpark, Python and SQL pipelines, machine learning on telematics data. MSc Data Science, Politecnico di Torino.">
   <meta name="author" content="Juan Manuel Aragon Armas">
+  <!-- Owner switch: open the site with ?notrack to stop counting this browser, ?track to count it again -->
+  <script>
+    (function () {
+      try {
+        var q = location.search, msg = null;
+        if (/[?&]notrack\b/.test(q)) { localStorage.setItem('umami.disabled', '1'); msg = 'Analytics OFF for this browser \u2713'; }
+        else if (/[?&]track\b/.test(q)) { localStorage.removeItem('umami.disabled'); msg = 'Analytics ON for this browser'; }
+        if (msg) {
+          history.replaceState(null, '', location.pathname + location.hash);
+          addEventListener('DOMContentLoaded', function () {
+            var t = document.createElement('div');
+            t.textContent = msg;
+            t.style.cssText = 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#001F5A;color:#fff;padding:12px 20px;border-radius:999px;font:700 14px Lato,sans-serif;z-index:99;box-shadow:0 6px 20px rgba(0,0,0,.25)';
+            document.body.appendChild(t);
+            setTimeout(function () { t.remove(); }, 4000);
+          });
+        }
+      } catch (e) {}
+    })();
+  </script>
   <!-- Privacy-friendly analytics (Umami, no cookies) -->
   <script defer src="https://cloud.umami.is/script.js" data-website-id="688e1da0-65ed-4e3a-a15d-d938383e8512" data-domains="juanmaragon.github.io"></script>
   <meta name="google-site-verification" content="yWlDANsLCN1koM4O328B4oq-UJ3BAt_GuqggpmFlANk" />
